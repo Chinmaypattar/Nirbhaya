@@ -4,7 +4,7 @@ import { colorList } from "../Utils/ColorList";
 import InputBox from "../components/InputBox";
 import { useState } from "react";
 
-export default function Login() {
+export default function Login(props) {
 
  const [email, setEmail] = useState("")
   const [emailErr, setEmailErr] = useState("")

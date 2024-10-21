@@ -2,8 +2,9 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-nativ
 import React, { useEffect, useState } from 'react'
 import EmailIcon from 'react-native-vector-icons/MaterialCommunityIcons'; // Import icon from FontAwesome
 import PasswordIcon from 'react-native-vector-icons/Fontisto';
+import Icon from "react-native-vector-icons/FontAwesome"
 
-export default function InputBox({ style, onChangeText, text, label, isError, errMsg, type }) {
+export default function InputBox({ style, onChangeText, text="", label, isError, errMsg, type,placeHolder,isLine= true }) {
     return (
         <View style={{marginTop:15}}>
             {label && (
@@ -17,9 +18,10 @@ export default function InputBox({ style, onChangeText, text, label, isError, er
                     onChangeText={onChangeText}
                     value={text}
                     keyboardType={type === 'email' ? 'email-address' : type === 'phone' ? 'phone-pad' : 'default'}
-                    placeholder= {type === 'email' ? 'Email' : type === 'phone' ? 'phone-pad' : type === 'password' ? 'Password' : 'Username'}
+                    placeholder= {type === 'email' ? 'Email' : type === 'phone' ? 'Phone' : type === 'password' ? 'Password' :type === 'userName' ? 'User Name' : placeHolder}
                     secureTextEntry={type == "password" ? true : false}
                     placeholderTextColor={"#a6a6a6"}
+    
                 />
 
                 <TouchableOpacity
@@ -31,10 +33,19 @@ export default function InputBox({ style, onChangeText, text, label, isError, er
                     {
                         type === 'password' && <PasswordIcon name={'locked'} size={20} color="white" />
                     }
+                    {
+                        type === 'phone' && <Icon name={'phone'} size={20} color="white" />
+                    }
+                    {
+                        type === 'userName' || type ==="name" && <Icon name={'user'} size={20} color="white" />
+                    }
                 </TouchableOpacity>
 
             </View>
-            <View style={{ width: "100%", height: 1, backgroundColor: "white" }}></View>
+            {isLine && (
+   <View style={{ width: "100%", height: 1, backgroundColor: "white" }}></View>
+            )}
+         
 
             {/* {errMsg && errMsg !="" && (
                 // <Text style={styles.errTxt}>{errMsg}</Text>
