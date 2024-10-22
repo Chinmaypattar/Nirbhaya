@@ -14,11 +14,11 @@ export default function InputBox({ style, onChangeText, text="", label, isError,
             <View style={styles.inputContainer}>
                
                 <TextInput
-                    style={styles.textBox}
+                    style={[styles.textBox, type === "answer" && {fontSize:22}]}
                     onChangeText={onChangeText}
                     value={text}
                     keyboardType={type === 'email' ? 'email-address' : type === 'phone' ? 'phone-pad' : 'default'}
-                    placeholder= {type === 'email' ? 'Email' : type === 'phone' ? 'Phone' : type === 'password' ? 'Password' :type === 'userName' ? 'User Name' : placeHolder}
+                    placeholder= {type === 'email' ? 'Email' : type === 'phone' ? 'Phone' : type === 'password' ? 'Password' :type === 'userName' ? 'User Name' : type === "answer" ? "Answer" : placeHolder}
                     secureTextEntry={type == "password" ? true : false}
                     placeholderTextColor={"#a6a6a6"}
     

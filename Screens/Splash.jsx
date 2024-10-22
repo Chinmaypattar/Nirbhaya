@@ -15,9 +15,9 @@ export default function Splash(props) {
         <View style={styles.bgwrapper}>
             <Image source={logo} style={{ height: "30%" }} resizeMode="contain" />
             <View style={styles.textView}>
-                <Text style={styles.text}>
+                {/* <Text style={styles.text}>
                     Devotion · Tradition · Knowledge
-                </Text>
+                </Text> */}
             </View>
         </View>
     )
