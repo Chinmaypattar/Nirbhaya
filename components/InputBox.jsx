@@ -47,9 +47,9 @@ export default function InputBox({ style, onChangeText, text="", label, isError,
             )}
          
 
-            {/* {errMsg && errMsg !="" && (
-                // <Text style={styles.errTxt}>{errMsg}</Text>
-            )} */}
+            {errMsg && errMsg !="" && (
+                <Text style={styles.errTxt}>{errMsg}</Text>
+            )}
         </View>
 
     )
@@ -73,5 +73,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
+    },
+    errTxt: {
+
+        color: "#FF0000",
+        fontSize: 14,
+        marginTop:6
     },
 })
