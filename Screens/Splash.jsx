@@ -2,14 +2,35 @@ import { View, Text, SafeAreaView, StyleSheet, ImageBackground, Image } from 're
 import React, { useEffect } from 'react'
 import logo from "../Assets/Logo/Logo.png"
 import { colorList } from '../Utils/ColorList';
+import { getAsyncData } from '../Utils/Common';
+import { IS_FLOW_DONE } from '../Utils/Constants';
 export default function Splash(props) {
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            // Replace 'Home' with the screen you want to navigate to
+
+        async function checkUserFlow (){
+          const res = await getAsyncData(IS_FLOW_DONE)
+          if(res == undefined){
             props.navigation.replace('Login');
-        }, 2000);
+          }
+          else if(res == true){
+            props.navigation.replace('Home');
+        }
+          else{
+            props.navigation.replace('EmergencyContactDetails');
+            
+          }
+        }
+
+         checkUserFlow()
+
+        // const timer = setTimeout(() => {
+        //     // Replace 'Home' with the screen you want to navigate to
+        //     props.navigation.replace('Login');
+        // }, 2000);
     }, [])
+
+
 
     return (
         <View style={styles.bgwrapper}>

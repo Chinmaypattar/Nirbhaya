@@ -1,5 +1,6 @@
 import AllSetScreen from "../Screens/AllSetScreen"
 import EmergencyContactDetails from "../Screens/EmergencyContactDetails"
+import Home from "../Screens/Home"
 import Login from "../Screens/Login"
 import QuestionPage from "../Screens/QuestionsPage"
 import SignUp from "../Screens/SignUp"
@@ -47,5 +48,14 @@ export const route = [
     option: {
       headerShown: false,
     },
+    
+  },
+  {
+    name: 'Home',
+    component: Home,
+    option: {
+      headerShown: false,
+    },
+    
   },
 ]

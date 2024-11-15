@@ -1,33 +1,119 @@
-import { Text, SafeAreaView, Image, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { Text, SafeAreaView, Image, View, StyleSheet, TextInput, TouchableOpacity, LogBox } from "react-native";
 import logo from "../Assets/Logo/Logo.png"
 import { colorList } from "../Utils/ColorList";
 import InputBox from "../components/InputBox";
 import { useState } from "react";
 import Icon from "react-native-vector-icons/Fontisto"
+import { IS_FLOW_DONE, SIGN_UP } from "../Utils/Constants";
+import { postAPICall } from "../Utils/apiMethods";
+import { saveAsyncData } from "../Utils/Common";
+import OverLayLoader from "../components/OverLayLoader";
 
 export default function SignUp(props) {
-    const [email, setEmail] = useState("")
-    const [emailErr, setEmailErr] = useState("")
+    const [userName, setUserName] = useState("")
+    const [nameErr, setNameErr] = useState("")
+
     const [password, setPassword] = useState("")
     const [passwordErr, setPasswordErr] = useState("")
+    const [phone, setPhone] = useState("")
+    const [phoneErr, setPhoneErr] = useState("")
+    const [loader, setLoader] = useState(false)
+
+    const validatePassword = (password) => {
+        if (!password) {
+            setPasswordErr("Please enter your password");
+            return false;
+        } else if (password.length < 8) {
+            setPasswordErr("Password must be at least 8 characters long");
+            return false;
+        } else {
+            setPasswordErr("");
+            return true;
+        }
+    };
+
+    const validatePhoneNumber = (phoneNumber) => {
+        if (!phoneNumber) {
+            setPhoneErr("Please enter your phone number");
+            return false;
+        } else if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
+            setPhoneErr("Please enter a valid phone number.");
+            return false;
+        } else {
+            setPhoneErr("");
+            return true;
+        }
+    };
+
+    const validateName = (name) => {
+        
+        if (!name) {
+            setNameErr("Please enter your name");
+            return false;
+        } else {
+            setNameErr("");
+            return true;
+        }
+    };
+
+
+    const onSubmit = async () => {
+        const isPasswordValid = validatePassword(password);
+        const isPhoneNumberValid = validatePhoneNumber(phone);
+        const isNameValid = validateName(userName);
+
+        if (isPasswordValid && isPhoneNumberValid && isNameValid) {
+            
+                setLoader(true)
+                const reqObj = {
+                    "username": userName,
+                    "phonenumber": phone,
+                    "password": password
+                }
+
+                await onSignUp(reqObj)
+           
+        }
+    };
+
+    const onSignUp = async (req) => {
+
+        try {
+            const res = await postAPICall(SIGN_UP, req)
+            if (res) {
+                saveAsyncData(IS_FLOW_DONE,false )
+                props.navigation.replace("EmergencyContactDetails")
+            }
+            console.log(res)
+
+        } catch (err) {
+            console.log("Sign-up",err.message);
+            // showErrToast(err.message ? err.message :"Something went wrong")
+
+        }
+        setLoader(false)
+    }
     return (
         <SafeAreaView style={styles.bgWrapper}>
+            {loader &&(
+                <OverLayLoader/>
+            )}
             <View style={styles.appLogoView}>
                 <Image source={logo} style={styles.appLogoImage} resizeMode="contain"></Image>
                 <Text style={styles.textStyle}>NIRBHAVA</Text>
 
             </View>
             <View style={styles.textView}>
-                <InputBox isError={false} errMsg={emailErr} type="userName" onChangeText={(txt) => setEmail(txt)} />
-                <InputBox isError={false} errMsg={emailErr} type="email" onChangeText={(txt) => setEmail(txt)} />
+                <InputBox text={userName} isError={false} errMsg={nameErr} type="userName" onChangeText={(txt) => setUserName(txt)} />
+                {/* <InputBox isError={false} errMsg={emailErr} type="email" onChangeText={(txt) => setEmail(txt)} /> */}
 
 
-                <InputBox isError={false} errMsg={emailErr} type="phone" onChangeText={(txt) => setEmail(txt)} />
-                <InputBox isError={false} errMsg={emailErr} type="password" onChangeText={(txt) => setEmail(txt)} />
+                <InputBox text={phone} isError={false} errMsg={phoneErr} type="phone" onChangeText={(txt) => setPhone(txt)} />
+                <InputBox text={password} isError={false} errMsg={passwordErr} type="password" onChangeText={(txt) => setPassword(txt)} />
             </View>
 
             <View style={{ alignItems: "center", flex: 1 }}>
-                <TouchableOpacity style={styles.subBtn} activeOpacity={0.7} onPress={()=>props.navigation.replace("EmergencyContactDetails")}>
+                <TouchableOpacity style={styles.subBtn} activeOpacity={0.7} onPress={()=>onSubmit()}>
                     <Text style={styles.subTxt}>Next</Text>
                     <Icon name={'arrow-right-l'} size={20} color="white" />
 
